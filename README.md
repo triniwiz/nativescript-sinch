@@ -1,0 +1,2 @@
+#NativeScript-Sinch
+##WIP

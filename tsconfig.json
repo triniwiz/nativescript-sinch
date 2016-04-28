@@ -1,0 +1,17 @@
+{
+    "compilerOptions": {
+        "target": "es5",
+        "module": "commonjs",
+        "removeComments": true,
+        "experimentalDecorators": true,
+        "sourceMap": true
+    },
+    "files": [
+      "demo/node_modules/tns-core-modules/tns-core-modules.d.ts",
+      "sinch.common.ts",
+      "sinch.android.ts", 
+      "sinch.ios.ts",
+      "install.ts"
+    ],
+    "compileOnSave": false
+}
