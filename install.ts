@@ -6,22 +6,23 @@ let file;
 switch (process.platform) {
     case 'linux':
         file = [
-            ['platforms/android/x86', 'platforms/android/libs/jni'],
-            ['platforms/android/x86_64', 'platforms/android/libs/jni'],
-            ['platforms/android/arm64-v8a', 'platforms/android/libs/jni'],
-            ['platforms/android/armeabi-v7a', 'platforms/android/libs/jni'],
-            ['platforms/android/sinch-android-rtc-3.9.3.jar', 'platforms/android/libs']
+            [path.resolve('./', 'platforms/android/x86'), path.resolve('../../', 'platforms/android/libs/jni')],
+            [path.resolve('./', 'platforms/android/x86_64'), path.resolve('../../', 'platforms/android/libs/jni')],
+            [path.resolve('./', 'platforms/android/arm64-v8a'), path.resolve('../../', 'platforms/android/libs/jni')],
+            [path.resolve('./', 'platforms/android/armeabi-v7a'), path.resolve('../../', 'platforms/android/libs/jni')],
+            [path.resolve('./', 'platforms/android/sinch-android-rtc-3.9.3.jar'), path.resolve('../../', 'platforms/android/libs/')]
         ];
 
-      //  process.chdir(projectDir)
+
         file.forEach(function (item, index) {
             let fileOrFolder = item[0];
             let dest = item[1];
-            exec.exec(`cd ${projectDir} && cp -avr ${fileOrFolder} ${dest}`, function (error, stdout, stderr) {
+            exec.exec(`cp -avr ${fileOrFolder} ${dest}`, function (error, stdout, stderr) {
                 if (error) {
                     console.log(error)
-                }else{
-                    fs.unlink(fileOrFolder);
+                }
+                if (index === 4) {
+                    exec.exec(`rm -rf ${path.resolve('./', 'platforms/')}`)
                 }
             })
         })
@@ -29,23 +30,25 @@ switch (process.platform) {
         break;
     case 'win32':
         file = [
-            ['platforms/android/x86', 'platforms/android/libs/jni'],
-            ['platforms/android/x86_64', 'platforms/android/libs/jni'],
-            ['platforms/android/arm64-v8a', 'platforms/android/libs/jni'],
-            ['platforms/android/armeabi-v7a', 'platforms/android/libs/jni'],
-            ['platforms/android/sinch-android-rtc-3.9.3.jar', 'platforms/android/libs']
+            [path.resolve('./', 'platforms/android/x86'), path.resolve('../../', 'platforms/android/libs/jni')],
+            [path.resolve('./', 'platforms/android/x86_64'), path.resolve('../../', 'platforms/android/libs/jni')],
+            [path.resolve('./', 'platforms/android/arm64-v8a'), path.resolve('../../', 'platforms/android/libs/jni')],
+            [path.resolve('./', 'platforms/android/armeabi-v7a'), path.resolve('../../', 'platforms/android/libs/jni')],
+            [path.resolve('./', 'platforms/android/sinch-android-rtc-3.9.3.jar'), path.resolve('../../', 'platforms/android/libs/')]
         ];
 
-      //  process.chdir(projectDir)
+
         file.forEach(function (item, index) {
             let fileOrFolder = item[0];
             let dest = item[1];
-            exec.exec(`cd ${projectDir} && xcopy ${fileOrFolder} ${dest}`, function (error, stdout, stderr) {
-                 if (error) {
+            exec.exec(`xcopy ${fileOrFolder} ${dest}`, function (error, stdout, stderr) {
+                if (error) {
                     console.log(error)
-                }else{
-                    fs.unlink(fileOrFolder);
                 }
+                if (index === 4) {
+                    exec.exec(`RD /S /Q ${path.resolve('./', 'platforms/')}`)
+                }
+
             })
         })
         break;
