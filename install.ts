@@ -13,11 +13,11 @@ switch (process.platform) {
             ['platforms/android/sinch-android-rtc-3.9.3.jar', 'platforms/android/libs']
         ];
 
-        process.chdir(projectDir)
+      //  process.chdir(projectDir)
         file.forEach(function (item, index) {
             let fileOrFolder = item[0];
             let dest = item[1];
-            exec.exec(`cp -avr ${fileOrFolder} ${dest}`, function (error, stdout, stderr) {
+            exec.exec(`cd ${projectDir} && cp -avr ${fileOrFolder} ${dest}`, function (error, stdout, stderr) {
                 if (error) {
                     console.log(error)
                 }else{
@@ -36,11 +36,11 @@ switch (process.platform) {
             ['platforms/android/sinch-android-rtc-3.9.3.jar', 'platforms/android/libs']
         ];
 
-        process.chdir(projectDir)
+      //  process.chdir(projectDir)
         file.forEach(function (item, index) {
             let fileOrFolder = item[0];
             let dest = item[1];
-            exec.exec(`xcopy ${fileOrFolder} ${dest}`, function (error, stdout, stderr) {
+            exec.exec(`cd ${projectDir} && xcopy ${fileOrFolder} ${dest}`, function (error, stdout, stderr) {
                  if (error) {
                     console.log(error)
                 }else{
