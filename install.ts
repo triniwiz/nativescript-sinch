@@ -1,8 +1,8 @@
 import exec = require('child_process');
 import path = require('path');
+import fs = require("fs");
 let projectDir = process.cwd();
 let file;
-console.log(projectDir)
 switch (process.platform) {
     case 'linux':
         file = [
@@ -20,6 +20,8 @@ switch (process.platform) {
             exec.exec(`cp -avr ${fileOrFolder} ${dest}`, function (error, stdout, stderr) {
                 if (error) {
                     console.log(error)
+                }else{
+                    fs.unlink(fileOrFolder);
                 }
             })
         })
@@ -39,8 +41,10 @@ switch (process.platform) {
             let fileOrFolder = item[0];
             let dest = item[1];
             exec.exec(`xcopy ${fileOrFolder} ${dest}`, function (error, stdout, stderr) {
-                if (error) {
+                 if (error) {
                     console.log(error)
+                }else{
+                    fs.unlink(fileOrFolder);
                 }
             })
         })

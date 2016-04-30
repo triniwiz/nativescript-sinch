@@ -1,0 +1,9 @@
+<Page xmlns="http://schemas.nativescript.org/tns.xsd" loaded="loaded" navigatingTo="navigatingTo">
+<GridLayout columns="*,*,*" rows="7*,auto,auto">
+<StackLayout colSpan="3"></StackLayout>
+<TextField row="1" colSpan="3" text="{{calle}}" hint="Username to call"/>
+<Button visibility="{{ !inCall ? 'visible' : 'collapsed' }}" tap="call" id="call" row="2" class="font-awesome" text="&#xf095; Call"/>
+<Button visibility="{{ inCall ? 'visible' : 'collapsed' }}" tap="hangup" id="end" col="1" row="2" class="font-awesome" text="&#xf095; End"/>
+<Button visibility="{{ incomingCall != null ? 'visible' : 'collapsed' }}" tap="answer" id="answer" col="2" row="2" class="font-awesome" text="&#xf095; Answer"/>
+</GridLayout>
+</Page>

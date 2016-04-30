@@ -1,0 +1,7 @@
+<Page xmlns="http://schemas.nativescript.org/tns.xsd" navigatingTo="navigatingTo" loaded="loaded">
+<GridLayout columns="*,*,*" rows="50%">
+<Button text="Message" tap="goToMessage"/>
+<Button col="1" text="Voice" tap="goToVoice"/>
+<Button col="2" text="Video" tap="goToVideo"/>
+</GridLayout>
+</Page>

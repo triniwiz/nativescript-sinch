@@ -1,0 +1,12 @@
+<Page xmlns="http://schemas.nativescript.org/tns.xsd" loaded="loaded">
+  <StackLayout>
+  <TextField text="{{username}}" hint="to"/>
+  <TextField text="{{body}}" hint="Enter message...."/>
+  <Button text="Send" tap="sendMessage()"/>
+  <ListView items="{{messages}}">
+  <ListView.itemTemplate>
+  <Label text="{{body}}"/>
+  </ListView.itemTemplate>
+  </ListView>
+  </StackLayout>
+</Page>

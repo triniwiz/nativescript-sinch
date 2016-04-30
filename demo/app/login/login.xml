@@ -1,0 +1,6 @@
+<Page xmlns="http://schemas.nativescript.org/tns.xsd" loaded="loaded">
+  <StackLayout>
+  <TextField text="{{username}}"/>
+<Button text="Login" tap="login" isEditing="{{enable}}"/>
+  </StackLayout>
+</Page>
