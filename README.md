@@ -1,9 +1,13 @@
 #NativeScript-Sinch
 ##WIP
 
-
 ##Install
-`tns plugin add nativescript-sinch`
+**Note** : If the android platform is not added before installing this plugin the installation will fail.
+
+```js
+tns platform add android 
+tns plugin add nativescript-sinch
+```
 
 
 ```js
@@ -74,4 +78,64 @@ removeCallClientListener(callClientListener:()=>void)
 setRespectNativeCalls(respectNativeCalls:boolean)
  ```
  
+ Get MessageClient
  
+ ```js
+ sinchClient.getMessageClient();
+ ```
+ 
+  e.g
+ ```js
+var messageClient = sinchClient.getCallClient();
+ ```
+ Methods
+ 
+ ```
+ var message = sinchClient.writableMessage();
+ var message = sinchClient.writableMessage(["triniwiz","brad","jen","peter"],"Hi");
+ var message = sinchClient.writableMessage("triniwiz","Sup");
+ messageClient.send(message);
+ ```
+ 
+ ```js
+addMessageClientListener(callback:()=>void);
+removeMessageClientListener(callback:()=>void);
+send(message:WriteableMessage);
+```
+
+Get VideoController
+
+```js
+ sinchClient.getVideoController()
+  
+```
+
+e.g
+```js
+var videoController = sinchClient.getVideoController();
+videoController.getCaptureDevicePosition() 
+videoController.getLocalView() 
+videoController.getRemoteView() 
+videoController.setBorderColor(float r, float g, float b)
+videoController.setCaptureDevicePosition(int facing)
+videoController.setResizeBehaviour(VideoScalingType type)
+videoController.toggleCaptureDevicePosition() 
+
+```
+
+Get AudioController
+
+```js
+  sinchClient.getAudioController()
+```
+
+e.g
+
+```js
+var audioController = sinchClient.getAudioController();
+
+audioController.mute();
+audioController.unmute();
+audioController.enableSpeaker();
+audioController.disableSpeaker();
+```

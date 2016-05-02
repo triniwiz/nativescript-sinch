@@ -1,0 +1,28 @@
+<Page xmlns="http://schemas.nativescript.org/tns.xsd" loaded="loaded" navigatingTo="navigatingTo">
+<StackLayout>
+<Image style="margin:0,5; padding:5;" src="~/assets/images/cape_dude.jpg"/>
+
+<GridLayout rows="auto,auto,auto">
+<Label style="font-size:24;horizontal-align:center;" text="{{calle}}"/>
+<Label row="1" style="font-size:24;horizontal-align:center;"  text="{{callState}}"/>
+<Label row="2" style="font-size:24;horizontal-align:center;"  text="{{endCause}}"/>
+</GridLayout>
+
+
+<StackLayout>
+
+<GridLayout verticalAlignment="top" colSpan="2" columns="*,*,*,*">
+<Button tap="disableSpeaker" class="font-awesome"  text="&#xf026;"/>
+<Button tap="enableSpeaker" class="font-awesome" col="1" text="&#xf028;"/>
+<Button tap="unmute" class="font-awesome" col="2" text="&#xf130;"/>
+<Button tap="mute" class="font-awesome" col="3" text="&#xf131;"/>
+</GridLayout>
+
+<GridLayout columns="*,*">
+<Button tap="hangup" verticalAlignment="bottom" id="end" class="font-awesome" text="&#xf095; End"/>
+<Button col="1" tap="answer" verticalAlignment="bottom" id="answer" col="1" class="font-awesome" text="&#xf095; Answer"/>
+</GridLayout>
+</StackLayout>
+
+</StackLayout>
+</Page>

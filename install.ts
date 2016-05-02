@@ -6,11 +6,12 @@ let file;
 switch (process.platform) {
     case 'linux':
         file = [
-            [path.resolve('./', 'platforms/android/x86'), path.resolve('../../', 'platforms/android/libs/jni')],
-            [path.resolve('./', 'platforms/android/x86_64'), path.resolve('../../', 'platforms/android/libs/jni')],
-            [path.resolve('./', 'platforms/android/arm64-v8a'), path.resolve('../../', 'platforms/android/libs/jni')],
-            [path.resolve('./', 'platforms/android/armeabi-v7a'), path.resolve('../../', 'platforms/android/libs/jni')],
-            [path.resolve('./', 'platforms/android/sinch-android-rtc-3.9.3.jar'), path.resolve('../../', 'platforms/android/libs/')]
+            [path.resolve('./', 'platforms/android/data/co'), path.resolve('../../', 'platforms/android/src/main/java')],
+            [path.resolve('./', 'platforms/android/data/x86'), path.resolve('../../', 'platforms/android/libs/jni')],
+            [path.resolve('./', 'platforms/android/data/x86_64'), path.resolve('../../', 'platforms/android/libs/jni')],
+            [path.resolve('./', 'platforms/android/data/arm64-v8a'), path.resolve('../../', 'platforms/android/libs/jni')],
+            [path.resolve('./', 'platforms/android/data/armeabi-v7a'), path.resolve('../../', 'platforms/android/libs/jni')],
+            [path.resolve('./', 'platforms/android/data/sinch-android-rtc-3.9.3.jar'), path.resolve('../../', 'platforms/android/libs/')]
         ];
 
 

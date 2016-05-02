@@ -1,0 +1,8 @@
+<Page xmlns="http://schemas.nativescript.org/tns.xsd" loaded="loaded" navigatingTo="navigatingTo">
+<GridLayout columns="*,*" rows="7*,auto,auto">
+<Image colSpan="2" src="~/assets/images/ns_logo.png"/>
+<TextField row="1" colSpan="2" text="{{calle}}" hint="Username to call"/>
+<Button tap="voiceCall" id="voiceCall" row="2" class="font-awesome" text="&#xf095; Voice Call"/>
+<Button tap="videoCall" id="voiceCall" row="2" col="1" class="font-awesome" text="&#xf03d; Video Call"/>
+</GridLayout>
+</Page>

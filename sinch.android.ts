@@ -1,7 +1,8 @@
 import common = require('./sinch.common');
 import app = require("application");
 import jsonHelper = require("./helpers/jsonHelper");
-
+import hashmapHelper = require("./helpers/hashmapHelper");
+import view = require("ui/core/view");
 
 export class Sinch extends common.Sinch {
     sinchClient;
@@ -94,9 +95,72 @@ export class Sinch extends common.Sinch {
     getVideoController() {
         return new VideoController(this.sinchClient.getVideoController());
     }
+    getAudioController() {
+        return new AudioController(this.sinchClient.getAudioController());
+    }
+
+    writableMessage(...args: any[]) {
+        return new WritableMessage(args);
+    }
 
 }
+class VideoCall {
+    call;
+    constructor(instance) {
+        this.call = instance;
+    }
+    addCallListener(callback) {
+        let listener = new co.fitcom.nativescript_sinch.CustomCallListener({
+            onCallEnded: function (call) {
+                callback.apply(null, [{ event: 'callEnded', call: call }]);
+            },
+            onCallEstablished: function (call) {
+                callback.apply(null, [{ event: 'callEstablished', call: call }]);
+            },
+            onCallProgressing: function (call) {
+                callback.apply(null, [{ event: 'callProgressing', call: call }]);
+            },
+            onShouldSendPushNotification: function (call, pushPairs) {
+                //   callback.apply(null, [{ event: 'ShouldSendPushNotification', listener: listener, call: call, pairs: pushPairs }]);
+            },
+            onVideoTrackAdded: function (call) {
+                callback.apply(null, [{ event: 'trackAdded', call: call }]);
+            }
+        });
 
+        this.call.addCallListener(listener);
+    }
+    answer() {
+        this.call.answer();
+    }
+    getCallId() {
+        return this.call.getCallId();
+    }
+    getDetails() {
+        return this.call.getDetails();
+    }
+    getDirection() {
+        return this.call.getDirection();
+    }
+    getHeaders() {
+        return (hashmapHelper.toJsObject(this.call.getHeaders()));
+    }
+    getRemoteUserId() {
+        return this.call.getRemoteUserId();
+    }
+    getState() {
+        return this.call.getState();
+    }
+    hangup() {
+        this.call.hangup();
+    }
+    removeCallListener(callListener) {
+        this.call.removeCallListener(callListener);
+    }
+    sendDTMF(keys) {
+        this.call.sendDTMF(keys)
+    }
+}
 class Call {
     call;
     constructor(instance) {
@@ -123,22 +187,22 @@ class Call {
         this.call.answer();
     }
     getCallId() {
-        return this.call.getCallId();
+        return this.call.getCallId().toString();
     }
     getDetails() {
         return this.call.getDetails();
     }
     getDirection() {
-        return this.call.getDirection();
+        return this.call.getDirection().toString();
     }
     getHeaders() {
-        return this.call.Headers();
+        return (hashmapHelper.toJsObject(this.call.getHeaders()));
     }
     getRemoteUserId() {
-        return this.call.RemoteUserId();
+        return this.call.getRemoteUserId().toString();
     }
     getState() {
-        return this.call.getState();
+        return this.call.getState().toString();
     }
     hangup() {
         this.call.hangup();
@@ -165,58 +229,38 @@ class CallClient {
     }
     callConference(conferenceId: string, headers?: Object) {
         if (headers) {
-            let hm = new java.util.HashMap();
-            Object.keys(headers).forEach((item) => {
-                hm.put(item, headers[item]);
-            })
-            this.callClient.callConference(conferenceId, hm);
+            return new Call(this.callClient.callConference(conferenceId, hashmapHelper.toHashMap(headers)));
         } else {
-            this.callClient.callConference(conferenceId);
+            return new Call(this.callClient.callConference(conferenceId));
         }
 
     }
     callPhoneNumber(phoneNumber: string, headers?: Object) {
         if (headers) {
-            let hm = new java.util.HashMap();
-            Object.keys(headers).forEach((item) => {
-                hm.put(item, headers[item]);
-            })
-            this.callClient.callPhoneNumber(phoneNumber, hm);
+            return new Call(this.callClient.callPhoneNumber(phoneNumber, hashmapHelper.toHashMap(headers)));
         } else {
-            this.callClient.callPhoneNumber(phoneNumber);
+            return new Call(this.callClient.callPhoneNumber(phoneNumber));
         }
     }
     callSip(sipIdentity: string, headers?: Object) {
         if (headers) {
-            let hm = new java.util.HashMap();
-            Object.keys(headers).forEach((item) => {
-                hm.put(item, headers[item]);
-            })
-            this.callClient.callSip(sipIdentity, hm);
+            return new Call(this.callClient.callSip(sipIdentity, hashmapHelper.toHashMap(headers)));
         } else {
-            this.callClient.callSip(sipIdentity);
+            return new Call(this.callClient.callSip(sipIdentity));
         }
     }
     callUser(toUserId: string, headers?: Object) {
         if (headers) {
-            let hm = new java.util.HashMap();
-            Object.keys(headers).forEach((item) => {
-                hm.put(item, headers[item]);
-            })
-            return new Call(this.callClient.callUser(toUserId, hm));
+            return new Call(this.callClient.callUser(toUserId, hashmapHelper.toHashMap(headers)));
         } else {
             return new Call(this.callClient.callUser(toUserId));
         }
     }
     callUserVideo(toUserId: string, headers?: Object) {
         if (headers) {
-            let hm = new java.util.HashMap();
-            Object.keys(headers).forEach((item) => {
-                hm.put(item, headers[item]);
-            })
-            this.callClient.callUserVideo(toUserId, hm);
+            return new VideoCall(this.callClient.callUserVideo(toUserId, hashmapHelper.toHashMap(headers)));
         } else {
-            this.callClient.callUserVideo(toUserId);
+            return new VideoCall(this.callClient.callUserVideo(toUserId));
         }
     }
     getCall(callId: string) {
@@ -229,8 +273,6 @@ class CallClient {
         this.callClient.setRespectNativeCalls(support);
     }
 }
-
-
 class MessageClient {
     messageClient;
     constructor(instance) {
@@ -253,6 +295,7 @@ class MessageClient {
                 callback.apply(null, [{ event: 'incomingSent', listener: listener, client: client, message: message, recipientId: recipientId }]);
             },
             onShouldSendPushData: function (client, message, pushPairs) {
+                this.super.onShouldSendPushData(client, message, pushPairs);
                 //   callback.apply(null, [{ event: 'ShouldSendPushData', listener: listener, client: client, message: message }]);
             }
         });
@@ -265,15 +308,16 @@ class MessageClient {
         this.messageClient.send(message);
     }
 }
-
 class WritableMessage {
     wm;
     list;
     constructor(...args: any[]) {
         if (Array.isArray(args[0])) {
-            this.wm = new WritableMessage(jsonHelper.serialize(args[0]), args[1])
+            this.wm = new com.sinch.android.rtc.messaging.WritableMessage(jsonHelper.serialize(args[0]), args[1])
         } else if (typeof args[0] === 'string') {
-            this.wm = new WritableMessage(args[0], args[1]);
+            this.wm = new com.sinch.android.rtc.messaging.WritableMessage(args[0], args[1]);
+        } else {
+            this.wm = new com.sinch.android.rtc.messaging.WritableMessage();
         }
     }
 
@@ -303,10 +347,10 @@ class WritableMessage {
 
 
 }
-
 class AudioController {
     audioController;
     constructor(instance) {
+        console.dump(instance)
         this.audioController = instance;
     }
 
@@ -323,7 +367,6 @@ class AudioController {
         this.audioController.unmute();
     };
 }
-
 class VideoController {
     videoController;
     constructor(instance) {
@@ -360,5 +403,25 @@ class VideoController {
     }
     toggleCaptureDevicePosition() {
         this.videoController.toggleCaptureDevicePosition();
+    }
+}
+
+
+export class SinchView extends view.View {
+    private _android: android.widget.LinearLayout;
+    constructor() {
+        super();
+    }
+    get android(): android.widget.LinearLayout {
+        return this._android;
+    }
+    get _nativeView(): android.widget.LinearLayout {
+        return this._android;
+    }
+    public _createUI() {
+        this._android = new android.widget.LinearLayout(this._context);
+    }
+    public addVideoView(view) {
+        this._android.addView(view);
     }
 }

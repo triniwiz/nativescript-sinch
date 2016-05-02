@@ -6,7 +6,8 @@
     }
   },
   "dependencies": {
-    "nativescript-sinch": "git+https://github.com/triniwiz/nativescript-sinch.git",
+    "nativescript-audio": "^2.0.1",
+    "nativescript-sinch": "file:..",
     "tns-core-modules": "^2.0.0"
   },
   "devDependencies": {
