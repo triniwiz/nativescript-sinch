@@ -1,3 +1,5 @@
+﻿[![npm](https://img.shields.io/npm/v/nativescript-sinch.svg)](https://www.npmjs.com/package/nativescript-sinch)
+[![npm](https://img.shields.io/npm/dt/nativescript-sinch.svg?label=npm%20downloads)](https://www.npmjs.com/package/nativescript-sinch)
 #NativeScript-Sinch
 ##WIP
 
