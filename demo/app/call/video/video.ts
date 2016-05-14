@@ -5,7 +5,7 @@ let videoVM;
 let page;
 export function navigatingTo(args: NavigatedData) {
     page = <Page>args.object;
-    videoVM = new VideoViewModel(args.context.instance, args.context.call, page.getViewById("lv"),page.getViewById("rv"));
+    videoVM = new VideoViewModel(args.context.instance, args.context.call, page.getViewById("lv"), page.getViewById("rv"));
 }
 
 export function loaded(args) {
@@ -14,12 +14,12 @@ export function loaded(args) {
 
 
 export function localLoaded(args) {
-
+    console.log('lv')
 }
 
 
 export function remoteLoaded(args) {
-
+    console.log('rv')
 }
 
 

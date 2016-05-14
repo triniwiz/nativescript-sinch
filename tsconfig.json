@@ -11,7 +11,8 @@
       "sinch.common.ts",
       "sinch.android.ts", 
       "sinch.ios.ts",
-      "install.ts"
+      "install.ts",
+      "uninstall.ts"
     ],
     "compileOnSave": false
 }

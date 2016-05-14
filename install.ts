@@ -1,62 +1,102 @@
-import exec = require('child_process');
 import path = require('path');
 import fs = require("fs");
-let projectDir = process.cwd();
-let file;
-switch (process.platform) {
-    case 'linux':
-        file = [
-            [path.resolve('./', 'platforms/android/data/co'), path.resolve('../../', 'platforms/android/src/main/java')],
-            [path.resolve('./', 'platforms/android/data/x86'), path.resolve('../../', 'platforms/android/libs/jni')],
-            [path.resolve('./', 'platforms/android/data/x86_64'), path.resolve('../../', 'platforms/android/libs/jni')],
-            [path.resolve('./', 'platforms/android/data/arm64-v8a'), path.resolve('../../', 'platforms/android/libs/jni')],
-            [path.resolve('./', 'platforms/android/data/armeabi-v7a'), path.resolve('../../', 'platforms/android/libs/jni')],
-            [path.resolve('./', 'platforms/android/data/sinch-android-rtc-3.9.3.jar'), path.resolve('../../', 'platforms/android/libs/')]
-        ];
+let file = [
+    [path.resolve('./', 'platforms/android/data/co/fitcom/nativescript_sinch/CustomCallListener.java'), path.resolve('../../', 'platforms/android/src/main/java/co/fitcom/nativescript_sinch'), 'CustomCallListener.java'],
+    [path.resolve('./', 'platforms/android/data/x86/libsinch-android-rtc.so'), path.resolve('../../', 'platforms/android/libs/jni/x86'), 'libsinch-android-rtc.so'],
+    [path.resolve('./', 'platforms/android/data/x86_64/libsinch-android-rtc.so'), path.resolve('../../', 'platforms/android/libs/jni/x86_64'), 'libsinch-android-rtc.so'],
+    [path.resolve('./', 'platforms/android/data/arm64-v8a/libsinch-android-rtc.so'), path.resolve('../../', 'platforms/android/libs/jni/arm64-v8a'), 'libsinch-android-rtc.so'],
+    [path.resolve('./', 'platforms/android/data/armeabi-v7a/libsinch-android-rtc.so'), path.resolve('../../', 'platforms/android/libs/jni/armeabi-v7a'), 'libsinch-android-rtc.so'],
+    [path.resolve('./', 'platforms/android/data/sinch-android-rtc-3.9.3.jar'), path.resolve('../../', 'platforms/android/libs'), 'sinch-android-rtc-3.9.3.jar']
+];
 
 
-        file.forEach(function (item, index) {
-            let fileOrFolder = item[0];
-            let dest = item[1];
-            exec.exec(`cp -avr ${fileOrFolder} ${dest}`, function (error, stdout, stderr) {
-                if (error) {
-                    console.log(error)
+file.forEach(function (item, index) {
+    let fileOrFolder = item[0];
+    let dest = item[1];
+    let newFile = item[2];
+
+
+    fs.stat(dest, function (err, fileStat) {
+        if (err) {
+            if (err.code == 'ENOENT') {
+
+                if (dest.indexOf("nativescript_sinch") > -1) {
+                    let first = path.resolve('../../', 'platforms/android/src/main/java/co');
+                    let second = path.resolve('../../', 'platforms/android/src/main/java/co/fitcom');
+                    let third = path.resolve('../../', 'platforms/android/src/main/java/co/fitcom/nativescript_sinch');
+                    fs.mkdir(first, (err) => {
+                        if (!err) {
+                            fs.mkdir(second, (err) => {
+                                if (!err) {
+                                    fs.mkdir(dest, (err) => {
+                                        if (!err) {
+                                            fs.rename(fileOrFolder, `${dest}/${newFile}`, (err) => {
+                                                if (!err) {
+                                                    fs.unlink(fileOrFolder, (err) => {
+                                                        /*if (err) {
+                                                            console.log(err);
+                                                        }*/
+
+                                                    });
+                                                } else {
+                                                    console.log(err);
+                                                }
+                                            })
+                                        } else {
+                                            console.log(err)
+                                        }
+                                    });
+                                }
+                            });
+                        }
+                    });
+                } else {
+                    fs.mkdir(dest, (err) => {
+                        if (!err) {
+                            fs.rename(fileOrFolder, `${dest}/${newFile}`, (err) => {
+                                if (!err) {
+                                    fs.unlink(fileOrFolder, (err) => {
+                                        /*if (err) {
+                                            console.log(err);
+                                        }*/
+
+                                    });
+                                } else {
+                                    console.log(err);
+                                }
+                            })
+                        }
+
+                    });
                 }
-                if (index === 4) {
-                    exec.exec(`rm -rf ${path.resolve('./', 'platforms/')}`)
-                }
-            })
-        })
+            }
+        } else {
+            if (fileStat.isDirectory()) {
+    
+                fs.rename(fileOrFolder, `${dest}/${newFile}`, (err) => {
+                    if (!err) {
+                        fs.unlink(fileOrFolder, (err) => {
+                            /*if (err) {
+                                console.log(err);
+                            }*/
+    
+                        });
+                    } else {
+                        console.log(err);
+                    }
+                })
+            }
+        }
+    });
 
-        break;
-    case 'win32':
-        file = [
-            [path.resolve('./', 'platforms/android/x86'), path.resolve('../../', 'platforms/android/libs/jni')],
-            [path.resolve('./', 'platforms/android/x86_64'), path.resolve('../../', 'platforms/android/libs/jni')],
-            [path.resolve('./', 'platforms/android/arm64-v8a'), path.resolve('../../', 'platforms/android/libs/jni')],
-            [path.resolve('./', 'platforms/android/armeabi-v7a'), path.resolve('../../', 'platforms/android/libs/jni')],
-            [path.resolve('./', 'platforms/android/sinch-android-rtc-3.9.3.jar'), path.resolve('../../', 'platforms/android/libs/')]
-        ];
+      if (index === file.length - 1) {
+  
+          fs.rmdir(path.resolve('./', 'platforms/android/data'), (err) => {
+             /* if (err) {
+                  console.log(err);
+              }*/
+          });
+  
+      }
 
-
-        file.forEach(function (item, index) {
-            let fileOrFolder = item[0];
-            let dest = item[1];
-            exec.exec(`xcopy ${fileOrFolder} ${dest}`, function (error, stdout, stderr) {
-                if (error) {
-                    console.log(error)
-                }
-                if (index === 4) {
-                    exec.exec(`RD /S /Q ${path.resolve('./', 'platforms/')}`)
-                }
-
-            })
-        })
-        break;
-    case 'darwin':
-        break;
-    case 'sunos':
-        break;
-    case 'freebsd':
-        break;
-}
+})

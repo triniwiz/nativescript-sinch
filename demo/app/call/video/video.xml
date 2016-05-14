@@ -1,18 +1,19 @@
 <Page xmlns="http://schemas.nativescript.org/tns.xsd" xmlns:sinchView="nativescript-sinch" loaded="loaded" navigatingTo="navigatingTo">
-<StackLayout>
-<AbsoluteLayout  style.backgroundColor="lightgray">
-<sinchView:SinchView loaded="remoteLoaded" id="rv"/>
-<sinchView:SinchView loaded="localLoaded" id="lv" left="10" top="10" margin="30" width="100" height="100" />
-  </AbsoluteLayout>
+<GridLayout rows="*,auto,auto">
+
+<GridLayout>
+<sinchView:SinchView style.backgroundColor="lightgray" loaded="remoteLoaded" id="rv"/>
+<sinchView:SinchView style.backgroundColor="white" loaded="localLoaded" id="lv" verticalAlignment="top" horizontalAlignment="right" margin="30" width="150" height="200" /> 
+ </GridLayout>
   
-  <GridLayout rows="auto,auto,auto">
+  <GridLayout row="1" rows="auto,auto,auto">
 <Label style="font-size:24;horizontal-align:center;" text="{{calle}}"/>
 <Label row="1" style="font-size:24;horizontal-align:center;"  text="{{callState}}"/>
 <Label row="2" style="font-size:24;horizontal-align:center;"  text="{{endCause}}"/>
 </GridLayout>
 
 
-  <StackLayout>
+  <StackLayout row="2">
   <GridLayout verticalAlignment="top" colSpan="2" columns="*,*,*,*">
 <Button tap="disableSpeaker" class="font-awesome"  text="&#xf026;"/>
 <Button tap="enableSpeaker" class="font-awesome" col="1" text="&#xf028;"/>
@@ -21,12 +22,13 @@
 </GridLayout>
 
 <GridLayout columns="*,*">
-<Button verticalAlignment="bottom"  tap="hangup" id="end"  row="2" class="font-awesome" text="&#xf095; Hang Up"/>
-<Button verticalAlignment="bottom"  tap="answer" id="answer" col="1" row="2" class="font-awesome" text="&#xf095; Answer"/>
+<Button verticalAlignment="bottom"  visibility="{{ incomingCall ? 'visible' : 'collapsed' }}" tap="hangup" id="end"  row="2" class="font-awesome" text="&#xf095; Hang Up"/>
+<Button verticalAlignment="bottom" visibility="{{ incomingCall ? 'visible' : 'collapsed' }}"  tap="answer" id="answer" col="1" row="2" class="font-awesome" text="&#xf095; Answer"/>
+<Button verticalAlignment="bottom"  visibility="{{ inCall ? 'visible' : 'collapsed' }}" colSpan="2" tap="hangup" id="end"  class="font-awesome" text="&#xf095; Hang Up"/>
 </GridLayout>
 
   </StackLayout>
   
 
-</StackLayout>
+</GridLayout>
 </Page>

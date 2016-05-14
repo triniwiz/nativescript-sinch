@@ -7,7 +7,7 @@ export class CallViewModel extends Observable {
     currentCall;
     constructor(instance: any) {
         super();
-        this.set("calle", "brad");
+        this.set("calle", "");
         this.sinchClient = instance;
         this.callClient = this.sinchClient.getCallClient();
     }

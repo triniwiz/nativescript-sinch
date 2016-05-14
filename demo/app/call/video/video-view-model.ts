@@ -1,4 +1,5 @@
 import {Observable} from 'data/observable';
+import app = require("application");
 export class VideoViewModel extends Observable {
     sinchClient;
     currentCall;
@@ -11,6 +12,7 @@ export class VideoViewModel extends Observable {
     localView;
     remoteView;
     audioController;
+    direction;
     constructor(instance, call, localView, remoteView) {
         super();
         this.sinchClient = instance;
@@ -24,7 +26,8 @@ export class VideoViewModel extends Observable {
         this.set("inCall", false);
         this.videoController = this.sinchClient.getVideoController();
         this.audioController = this.sinchClient.getAudioController();
-        switch (this.currentCall.getDirection()) {
+        this.direction = this.currentCall.getDirection().toString();
+        switch (this.direction) {
             case 'INCOMING':
                 this.set("incomingCall", true);
                 break;
@@ -46,7 +49,18 @@ export class VideoViewModel extends Observable {
                     this.currentCall = null;
                     break;
                 case 'callEstablished':
-                    console.log('esta')
+                    console.log('esta');
+
+                    if (this.get("incomingCall")) {
+                        var lv = this.videoController.getLocalView();
+                        this.localView.addVideoView(lv);
+
+                        let rv = this.videoController.getRemoteView();
+                        this.remoteView.addVideoView(rv);
+                    } else {
+                        let rv = this.videoController.getRemoteView();
+                        this.remoteView.addVideoView(rv);
+                    }
                     this.set("inCall", true);
                     this.set("incomingCall", false);
                     this.set("callState", this.currentCall.getState());
@@ -56,9 +70,8 @@ export class VideoViewModel extends Observable {
                     this.set("callState", this.currentCall.getState());
                     break;
                 case 'trackAdded':
-                    console.log('track')
-                    this.remoteView.addVideoView(this.videoController.getRemoteView());
-                    this.localView.addVideoView(this.videoController.getLocalView());
+                    var lv = this.videoController.getLocalView();
+                    this.localView.addVideoView(lv);
                     break;
             }
 

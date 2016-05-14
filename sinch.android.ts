@@ -350,7 +350,6 @@ class WritableMessage {
 class AudioController {
     audioController;
     constructor(instance) {
-        console.dump(instance)
         this.audioController = instance;
     }
 
@@ -377,10 +376,16 @@ class VideoController {
         return this.videoController.getCaptureDevicePosition();
     }
     getLocalView() {
-        return this.videoController.getLocalView();
+        let lv = this.videoController.getLocalView();
+        //Temp fix for video not displaying
+       // lv = lv.getChildAt(0);
+        return lv;
     }
     getRemoteView() {
-        return this.videoController.getRemoteView();
+        let rv = this.videoController.getRemoteView();
+        //Temp fix for video not displaying
+       // rv.setZOrderOnTop(true);
+        return rv;
     }
     setBorderColor(r: number, g: number, b: number) {
         this.videoController.setBorderColor(r, g, b)
@@ -411,6 +416,7 @@ export class SinchView extends view.View {
     private _android: android.widget.LinearLayout;
     constructor() {
         super();
+        console.log('init')
     }
     get android(): android.widget.LinearLayout {
         return this._android;
@@ -420,8 +426,10 @@ export class SinchView extends view.View {
     }
     public _createUI() {
         this._android = new android.widget.LinearLayout(this._context);
+        console.log('createUi')
     }
     public addVideoView(view) {
         this._android.addView(view);
+        console.log('addVideoView')
     }
 }

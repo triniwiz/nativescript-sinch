@@ -14,7 +14,8 @@
     "demo.android": "npm run preparedemo ; cd demo ; tns run android",
     "preparedemo": "npm run build ; cd demo ; tns plugin remove nativescript-sinch ; tns plugin add .. ; tns install",
     "setup": "cd demo ; npm install ; cd .. ; npm run build ; cd demo ; tns plugin add .. ; cd ..",
-    "postinstall": "node install.js"
+    "postinstall": "node install.js",
+    "preuninstall":"node uninstall.js"
   },
   "repository": {
     "type": "git",
