@@ -1,9 +1,9 @@
 import {Observable} from 'data/observable';
 import {Sinch} from 'nativescript-sinch';
 import {Frame} from 'ui/frame';
-const appKey = "bd9fc79e-0c8a-4317-8b74-d251d35b3402";
-const appSecret = "LoJQjM1j+0S90tj7LrMguw==";
-const appHost = "sandbox.sinch.com";
+const appKey = "appKey";
+const appSecret = "appSecret";
+const appHost = "appHost";
 
 export class LoginViewModel extends Observable {
     username: string;
